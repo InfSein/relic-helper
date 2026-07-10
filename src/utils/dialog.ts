@@ -1,0 +1,125 @@
+import type { VNodeChild } from "vue"
+import type DialogComponent from "@/components/ui/Dialog.vue"
+import type { InternalDialogOptions } from "@/components/ui/Dialog.vue"
+type DialogProvider = InstanceType<typeof DialogComponent>
+
+type DialogType = "error" | "success" | "warning" | "info"
+export interface DialogOptions {
+  title?: string | (() => VNodeChild)
+  content?: string | (() => VNodeChild)
+  type?: DialogType
+  closable?: boolean
+}
+
+let dialogProvider : DialogProvider | null = null
+export function registerDialogProvider(instance: DialogProvider) {
+  dialogProvider = instance
+}
+
+export const useDialog = () => {
+  const buildDialogOptions = (
+    input: string | DialogOptions,
+    defaultTitle: string,
+    defaultType: DialogType,
+  ): Omit<InternalDialogOptions, "id"> => {
+    if (typeof input === "string") {
+      return {
+        title: defaultTitle,
+        content: input,
+        type: defaultType,
+        closable: false,
+      }
+    } else {
+      return {
+        title: input.title || defaultTitle,
+        content: input.content || '',
+        type: input.type || defaultType,
+        closable: input.closable ?? false,
+      }
+    }
+  }
+
+  const alert = (input: string | DialogOptions) : Promise<void> => {
+    const options = buildDialogOptions(input, '警告', 'warning')
+    return new Promise((resolve, reject) => {
+      if (!dialogProvider) {
+        reject(new Error("Dialog provider is not registered"))
+        return
+      }
+      dialogProvider.openDialog({
+        ...options,
+        positiveText: '确认',
+        onPositiveClick: () => resolve(),
+      })
+    })
+  }
+  const alertInfo = (input: string | DialogOptions) : Promise<void> => {
+    const options = buildDialogOptions(input, '提示', 'info')
+    return new Promise((resolve, reject) => {
+      if (!dialogProvider) {
+        reject(new Error("Dialog provider is not registered"))
+        return
+      }
+      dialogProvider.openDialog({
+        ...options,
+        positiveText: '确认',
+        onPositiveClick: () => resolve(),
+      })
+    })
+  }
+  const alertError = (input: string | DialogOptions) : Promise<void> => {
+    const options = buildDialogOptions(input, '错误', 'error')
+    return new Promise((resolve, reject) => {
+      if (!dialogProvider) {
+        reject(new Error("Dialog provider is not registered"))
+        return
+      }
+      dialogProvider.openDialog({
+        ...options,
+        positiveText: '确认',
+        onPositiveClick: () => resolve(),
+      })
+    })
+  }
+
+  const confirm = (input: string | DialogOptions): Promise<boolean> => {
+    const options = buildDialogOptions(input, '提示', 'info')
+    return new Promise((resolve, reject) => {
+      if (!dialogProvider) {
+        reject(new Error("Dialog provider is not registered"))
+        return
+      }
+      dialogProvider.openDialog({
+        ...options,
+        positiveText: '确认',
+        negativeText: '取消',
+        onPositiveClick: () => resolve(true),
+        onNegativeClick: () => resolve(false),
+      })
+    })
+  }
+  const confirmWarning = (input: string | DialogOptions): Promise<boolean> => {
+    const options = buildDialogOptions(input, '警告', 'warning')
+    return new Promise((resolve, reject) => {
+      if (!dialogProvider) {
+        reject(new Error("Dialog provider is not registered"))
+        return
+      }
+      dialogProvider.openDialog({
+        ...options,
+        positiveText: '确认',
+        negativeText: '取消',
+        onPositiveClick: () => resolve(true),
+        onNegativeClick: () => resolve(false),
+      })
+    })
+  }
+
+  return {
+    alert,
+    alertInfo,
+    alertError,
+    confirm,
+    confirmWarning,
+  }
+}
