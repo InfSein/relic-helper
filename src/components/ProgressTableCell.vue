@@ -2,12 +2,15 @@
 import { relicData } from '@/assets/data';
 import { CopyToClipboard } from '@/tools';
 import { getItemContexts, getItemInfo } from '@/tools/item';
+import { useIsMobile } from '@/composables/useIsMobile';
+import MobileItemMenu from './ui/MobileItemMenu.vue';
 import {
   SearchOutlined,
   InfoOutlined,
 } from '@vicons/material'
 
 const NAIVE_UI_MESSAGE = useMessage()
+const { isMobile } = useIsMobile()
 
 interface ProgressTableCellProps {
   hide?: boolean
@@ -32,15 +35,15 @@ const showDropdownRef = ref(false)
 const xRef = ref(0)
 const yRef = ref(0)
 
-const handleCopy = async (content: string, successMessage?: string) => {
-  const response = await CopyToClipboard(content)
+const handleMobileCopy = async (content: string, successMessage?: string) => {
+  const response = await CopyToClipboard(content, 'mobile-item-menu')
   if (response) {
     NAIVE_UI_MESSAGE.error('复制失败')
   } else {
     NAIVE_UI_MESSAGE.success(successMessage ?? '复制成功')
   }
 }
-const { options, handleKeyEvent } = getItemContexts(itemInfo.value, handleCopy)
+const { options, handleKeyEvent } = getItemContexts(itemInfo.value, handleMobileCopy)
 const handleContextMenu = (e: MouseEvent) => {
   e.preventDefault()
   showDropdownRef.value = false
@@ -111,7 +114,9 @@ const handleItemButtonTouchEnd = (/*e: TouchEvent*/) => {
           @touchend.passive="handleItemButtonTouchEnd"
         >
           <n-icon size="13"><SearchOutlined /></n-icon>
+          <!-- 桌面端：原位置式 n-dropdown 菜单（右键/长按触发） -->
           <n-dropdown
+            v-if="!isMobile"
             size="small"
             placement="bottom-start"
             trigger="manual"
@@ -145,6 +150,14 @@ const handleItemButtonTouchEnd = (/*e: TouchEvent*/) => {
         </div>
       </n-popover>
     </div>
+
+    <!-- 移动端：长按菜单改为底部抽屉 -->
+    <MobileItemMenu
+      v-if="isMobile"
+      v-model:show="showDropdownRef"
+      :options="options"
+      @select="handleSelect"
+    />
   </div>
 </template>
 

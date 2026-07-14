@@ -2,9 +2,11 @@
 import PatchTag from '@/components/ui/PatchTag.vue'
 import { relicData } from '@/assets/data'
 import { useStore } from '@/stores'
+import { useIsMobile } from '@/composables/useIsMobile'
 import { InsertChartOutlined } from '@vicons/material'
 
 const store = useStore()
+const { isMobile } = useIsMobile()
 
 const relicGroups = computed(() => {
   return Object.values(relicData.relicGroups)
@@ -49,12 +51,38 @@ const relicStats = computed(() => {
     groups: groupStats
   }
 })
+
+// #region 移动端锚点下拉跳转
+// 桌面端保留右侧 n-anchor 不变；移动端隐藏 anchor，改用顶部 n-select 跳转
+const anchorValue = ref<string | null>(null)
+const anchorOptions = computed(() => [
+  { label: '汇总数据', value: 'summary' },
+  ...relicGroups.value.map(g => ({ label: g.name_zh, value: g.key }))
+])
+const jumpToAnchor = (value: string | number) => {
+  const el = document.getElementById(String(value))
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+  // 跳转后清空选择，使输入框回到 placeholder，便于再次选择同一项
+  anchorValue.value = null
+}
+// #endregion
 </script>
 
 <template>
-  <div id="pr-main" class="flex gap-4">
+  <div id="pr-main" :class="isMobile ? 'flex flex-col gap-4' : 'flex gap-4'">
     <div class="flex-1 min-w-0">
       <n-h1 id="summary">汇总数据</n-h1>
+      <n-select
+        v-if="isMobile"
+        v-model:value="anchorValue"
+        :options="anchorOptions"
+        size="small"
+        placeholder="快速跳转到..."
+        class="mobile-anchor-select"
+        @update:value="jumpToAnchor"
+      />
       <div>
         <n-card class="bg-primary/5!" :bordered="false">
           <div class="flex flex-wrap items-center justify-around gap-12 p-2">
@@ -123,7 +151,7 @@ const relicStats = computed(() => {
       </template>
     </div>
 
-    <div class="w-48">
+    <div v-if="!isMobile" class="w-48">
       <n-anchor
         affix
         listen-to="#pr-main"

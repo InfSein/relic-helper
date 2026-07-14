@@ -3,9 +3,11 @@ import {
   TrendingUpRound,
 } from '@vicons/material'
 import { getItemInfo } from '@/tools/item'
+import { useIsMobile } from '@/composables/useIsMobile'
 import EorzeaTime from '@/utils/eorzea-time'
 
 const currentET = inject<Ref<EorzeaTime>>('currentET')!
+const { isMobile } = useIsMobile()
 
 // #region Constants
 const atmaItems = [
@@ -131,7 +133,7 @@ const formatCountdown = (localMilliseconds: number) => {
   <div>
     <n-h1>魂晶计时器</n-h1>
     <n-p>玄不改非……仅供参考！</n-p>
-    <n-table striped :single-line="false" class="table-fixed">
+    <n-table v-if="!isMobile" striped :single-line="false" class="table-fixed">
       <colgroup>
         <col class="w-50" />
         <col class="w-45" />
@@ -181,6 +183,33 @@ const formatCountdown = (localMilliseconds: number) => {
       </tbody>
     </n-table>
 
+    <!-- 移动端：卡片式魂晶计时器 -->
+    <div v-else class="atma-cards">
+      <div v-for="row in atmaRows" :key="row.id" class="atma-card">
+        <div class="atma-card-head">
+          <ItemSpan inline :item-info="getItemInfo(row.id)" />
+          <span class="atma-area">{{ row.area }}</span>
+        </div>
+        <div class="atma-card-body">
+          <div
+            v-for="key in (['month', 'day', 'hour'] as const)"
+            :key="key"
+            class="atma-cell"
+            :class="{ matched: row[key].matched }"
+          >
+            <div class="atma-cell-label">{{ { month: '月', day: '日', hour: '刻' }[key] }}</div>
+            <div class="atma-cell-cd">
+              <template v-if="row[key].matched">{{ formatCountdown(row[key].cd) }}后结束</template>
+              <template v-else>{{ formatCountdown(row[key].cd) }}后</template>
+            </div>
+            <div v-if="row[key].matched" class="atma-cell-badge">
+              <n-icon :size="12" :component="TrendingUpRound" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <n-h2>使用说明</n-h2>
     <n-ul>
       <n-li>装备了+1(天极)或更高阶段的古武之后，才能通过完成FATE获取魂晶。</n-li>
@@ -211,5 +240,72 @@ td.matched {
   &.hide-right {
     border-right-color: transparent !important;
   }
+}
+
+/* 移动端卡片式魂晶计时器 */
+.atma-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.atma-card {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.atma-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.atma-area {
+  font-size: 12px;
+  color: var(--color-text-sub);
+  white-space: nowrap;
+}
+.atma-card-body {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.atma-cell {
+  position: relative;
+  background: var(--color-background-embedded);
+  border-radius: 6px;
+  padding: 6px 4px;
+  text-align: center;
+  border: 1px solid transparent;
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.atma-cell.matched {
+  background: var(--color-primary-sub);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.atma-cell-label {
+  font-size: 10px;
+  opacity: 0.7;
+  margin-bottom: 2px;
+}
+.atma-cell-cd {
+  font-size: 10px;
+  line-height: 1.3;
+}
+.atma-cell-badge {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  font-size: 10px;
+  font-weight: 700;
+  pointer-events: none;
 }
 </style>

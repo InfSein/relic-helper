@@ -3,6 +3,7 @@
 @import "./styles/font.css";
 @import "./styles/scrollbar.css";
 @import "./styles/tailwind.css";
+@import "./styles/mobile.css";
 
 #app {
   width: 100%;

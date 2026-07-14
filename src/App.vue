@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { darkTheme, lightTheme } from 'naive-ui'
 import {
-  DarkModeTwotone, LightModeTwotone,
+  DarkModeTwotone, LightModeTwotone, MenuOutlined,
 } from '@vicons/material'
 import { RouterView } from 'vue-router'
 import Dialog from './components/ui/Dialog.vue'
 import AppLogo from '@/assets/icons/app-logo.svg?url'
 import GithubIcon from '@/assets/icons/external/github.svg'
 import useAppMenu from '@/composables/useAppMenu'
+import { useIsMobile } from '@/composables/useIsMobile'
 import AppInfo from '@/constants/app-info'
 import { useStore } from '@/stores'
 import { sleep } from './tools'
@@ -66,6 +67,27 @@ const appClasses = computed(() => {
     theme.value === 'dark' ? 'theme-dark' : 'theme-light',
   ].join(' ')
 })
+
+// #region 移动端适配（方案 B：汉堡 + 抽屉）
+// 桌面端（≥768px）isMobile 为 false，以下逻辑全部不生效，UI 零改动
+const { isMobile } = useIsMobile()
+const drawerOpen = ref(false)
+
+// 路由切换后自动关闭抽屉
+const route = useRoute()
+watch(() => route.path, () => {
+  if (isMobile.value) {
+    drawerOpen.value = false
+  }
+})
+
+// 进入移动端时展开菜单，确保抽屉内显示完整标签
+watch(isMobile, (mobile) => {
+  if (mobile) {
+    menuData.menuCollapsed = false
+  }
+})
+// #endregion
 </script>
 
 <template>
@@ -77,8 +99,11 @@ const appClasses = computed(() => {
       <n-message-provider placement="top">
         <n-layout position="absolute" :class="appClasses">
           <n-layout-header bordered class="h-14">
-            <div class="h-full px-6 grid grid-cols-[auto_1fr_auto]">
+            <div class="h-full px-6 grid grid-cols-[auto_1fr_auto] app-header-inner">
               <div class="flex items-center gap-2">
+                <n-button v-if="isMobile" quaternary class="mr-1!" @click="drawerOpen = true">
+                  <n-icon :size="22"><MenuOutlined /></n-icon>
+                </n-button>
                 <img width="28" height="28" :src="AppLogo" />
                 <div class="flex items-baseline gap-1">
                   <span class="text-lg">{{ AppInfo.name }}</span>
@@ -100,6 +125,7 @@ const appClasses = computed(() => {
           </n-layout-header>
           <n-layout has-sider position="absolute" class="top-14! bottom-14!">
             <n-layout-sider
+              v-if="!isMobile"
               bordered
               :width="300"
               content-class="p-6"
@@ -116,7 +142,7 @@ const appClasses = computed(() => {
                 :options="appMenuOptions"
               />
             </n-layout-sider>
-            <n-layout :native-scrollbar="false" content-class="p-8">
+            <n-layout :native-scrollbar="false" :content-class="isMobile ? 'p-4' : 'p-8'">
               <router-view />
             </n-layout>
           </n-layout>
@@ -125,12 +151,22 @@ const appClasses = computed(() => {
               <n-text depth="3" class="text-sm">
                 &copy; InfSein, 2026. All rights reserved.
                 </n-text>
-              <n-text depth="3" class="text-xs">
+              <n-text depth="3" class="text-xs footer-notice">
                 Content contributed by third parties remains the property of their respective owners.
                 FINAL FANTASY XIV-related materials, including but not limited to icons and images, are the property of SQUARE ENIX CO., LTD.
               </n-text>
             </div>
           </n-layout-footer>
+
+          <!-- 移动端抽屉菜单（方案 B） -->
+          <n-drawer v-if="isMobile" v-model:show="drawerOpen" :width="280" placement="left">
+            <n-drawer-content title="导航" closable>
+              <n-menu
+                v-model:value="menuData.currMenu"
+                :options="appMenuOptions"
+              />
+            </n-drawer-content>
+          </n-drawer>
 
           <Dialog ref="dialogRef" />
         </n-layout>

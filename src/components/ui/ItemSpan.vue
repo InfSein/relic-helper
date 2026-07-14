@@ -4,10 +4,13 @@ import {
 } from '@vicons/material'
 import ItemPop from './ItemPop.vue'
 import XivFARImage from './XivFARImage.vue'
+import MobileItemMenu from './MobileItemMenu.vue'
 import { CopyToClipboard } from '@/tools'
 import { getItemContexts, type ItemInfo } from '@/tools/item'
+import { useIsMobile } from '@/composables/useIsMobile'
 
 const NAIVE_UI_MESSAGE = useMessage()
+const { isMobile } = useIsMobile()
 
 interface ItemSpanProps {
   itemInfo: ItemInfo
@@ -193,6 +196,7 @@ const containerStyle = computed(() => {
       </span>
 
       <n-dropdown
+        v-if="!isMobile"
         size="small"
         placement="bottom-start"
         trigger="manual"
@@ -237,21 +241,30 @@ const containerStyle = computed(() => {
           @touchend.passive="handleItemButtonTouchEnd"
         >
           <InfoOutlined />
-          <n-dropdown
-            size="small"
-            placement="bottom-start"
-            trigger="manual"
-            :x="xRef"
-            :y="yRef"
-            :options="options"
-            :show="showDropdownRef"
-            :on-clickoutside="onClickoutside"
-            @select="handleSelect"
-          />
+        <n-dropdown
+          v-if="!isMobile"
+          size="small"
+          placement="bottom-start"
+          trigger="manual"
+          :x="xRef"
+          :y="yRef"
+          :options="options"
+          :show="showDropdownRef"
+          :on-clickoutside="onClickoutside"
+          @select="handleSelect"
+        />
         </n-icon>
       </ItemPop>
     </template>
   </div>
+
+  <!-- 移动端：右键/长按菜单改为底部抽屉 -->
+  <MobileItemMenu
+    v-if="isMobile"
+    v-model:show="showDropdownRef"
+    :options="options"
+    @select="handleSelect"
+  />
 </template>
 
 <style scoped>

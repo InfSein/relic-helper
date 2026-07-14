@@ -41,9 +41,18 @@ export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, 
  * @param container 在模态框中调用此函数必须传入模态框中的某个div容器的ref-value
  * @returns 如果成功，返回空字符串。否则返回"ERROR"。
  */
-export const CopyToClipboard = async (text: string, container?: HTMLElement | undefined | null) => {
+export const CopyToClipboard = async (text: string, container?: string | HTMLElement | undefined | null) => {
   try {
-    await toClipboard(text, container ?? undefined)
+    let htmlElement: HTMLElement | undefined | null = null
+    if (typeof container === 'string') {
+      htmlElement = document.getElementById(container)
+      if (!htmlElement) {
+        console.warn('Container not found for CopyToClipboard:', container)
+      }
+    } else {
+      htmlElement = container
+    }
+    await toClipboard(text, htmlElement ?? undefined)
     return ''
   } catch (e) {
     console.warn('Copy to clipboard action failed due to', e)
