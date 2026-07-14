@@ -14,7 +14,7 @@ const mapScale = computed(() => {
   let basement = 40
   console.log('mapid', props.mapData.map_id)
   if (props.mapData.map_id === 694) basement = 20 // 主城：拉闸含
-  if (props.mapData.map_id === 855) basement = 20 // 主城：图来有啦
+  if (props.mapData.map_id === 855) basement = 22 // 主城：图来有啦
   return props.mapSize / basement
 })
 

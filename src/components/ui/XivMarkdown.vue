@@ -182,6 +182,7 @@ watch(() => props.content, () => {
 }
 
 .xiv-markdown :deep(th) {
+  font-weight: bold;
   background-color: var(--color-background-hover);
 }
 
