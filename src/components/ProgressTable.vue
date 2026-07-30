@@ -49,6 +49,40 @@ const tableData = computed<TableRow[]>(() => {
   })
 })
 
+const isRowAllCollected = computed(() => {
+  const progressData = store.userData.relicProgress[props.relicGroup.id]
+  if (!progressData) return () => false
+  return (stageIndex: number) =>
+    props.relicGroup.jobs.every(job => (progressData[job] ?? -1) >= stageIndex)
+})
+
+const isJobAllCollected = computed(() => {
+  const progressData = store.userData.relicProgress[props.relicGroup.id]
+  const targetStage = props.showStageIndex ?? (props.relicGroup.targets.length - 1)
+  if (!progressData) return () => false
+  return (job: number) => (progressData[job] ?? -1) >= targetStage
+})
+
+const isPrereqsAllCollected = computed(() => {
+  if (!props.relicGroup.stage_prereqs) return false
+  const currentPreProgress = store.userData.relicPreProgress[props.relicGroup.id] ?? -1
+  if (props.showStageIndex !== undefined) {
+    const prereq = props.relicGroup.stage_prereqs[props.showStageIndex]
+    if (!prereq) return true
+    return currentPreProgress >= props.showStageIndex
+  }
+  return props.relicGroup.stage_prereqs.every((prereq, stageIndex) => {
+    if (!prereq) return true
+    return currentPreProgress >= stageIndex
+  })
+})
+
+const rowProps = (row: TableRow) => {
+  return {
+    class: isRowAllCollected.value(row.stageIndex) ? 'row-all-collected' : undefined,
+  }
+}
+
 const columns = computed<DataTableColumns<TableRow>>(() => [
   {
     title: '阶段',
@@ -83,6 +117,7 @@ const columns = computed<DataTableColumns<TableRow>>(() => [
       key: 'prereqs',
       width: tableWidths.job,
       align: 'center',
+      className: isPrereqsAllCollected.value ? 'col-all-collected' : undefined,
       render(row) {
         return h(
           ProgressTableCell,
@@ -125,6 +160,7 @@ const columns = computed<DataTableColumns<TableRow>>(() => [
       key: `job-${job}`,
       width: tableWidths.job,
       align: 'center',
+      className: isJobAllCollected.value(job) ? 'col-all-collected' : undefined,
       render(row) {
         return h(
           ProgressTableCell,
@@ -184,6 +220,7 @@ const allCollectedAlertData = computed(() => {
       :columns="columns"
       :data="tableData"
       :scroll-x="tableScrollX"
+      :row-props="rowProps"
     />
   </div>
 </template>
@@ -191,5 +228,14 @@ const allCollectedAlertData = computed(() => {
 <style scoped>
 .progress-table :deep(.n-data-table) {
   --n-td-padding: 6px 12px !important;
+}
+.progress-table :deep(tr.row-all-collected > td),
+.progress-table :deep(.col-all-collected) {
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+}
+.progress-table :deep(tr.row-all-collected > td:hover),
+.progress-table :deep(.col-all-collected:hover) {
+  opacity: 0.7;
 }
 </style>
