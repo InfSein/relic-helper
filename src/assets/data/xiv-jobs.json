@@ -1,0 +1,258 @@
+{
+  "8": {
+    "job_id": 8,
+    "short_name": "CRP",
+    "job_name_en": "Carpenter",
+    "job_name_zh": "刻木匠",
+    "job_name_ja": "木工師",
+    "job_icon_url": "/image/game-job/companion/carpenter.png"
+  },
+  "9": {
+    "job_id": 9,
+    "short_name": "BSM",
+    "job_name_en": "Blacksmith",
+    "job_name_zh": "锻铁匠",
+    "job_name_ja": "鍛冶師",
+    "job_icon_url": "/image/game-job/companion/blacksmith.png"
+  },
+  "10": {
+    "job_id": 10,
+    "short_name": "ARM",
+    "job_name_en": "Armorer",
+    "job_name_zh": "铸甲匠",
+    "job_name_ja": "甲冑師",
+    "job_icon_url": "/image/game-job/companion/armorer.png"
+  },
+  "11": {
+    "job_id": 11,
+    "short_name": "GSM",
+    "job_name_en": "Goldsmith",
+    "job_name_zh": "雕金匠",
+    "job_name_ja": "彫金師",
+    "job_icon_url": "/image/game-job/companion/goldsmith.png"
+  },
+  "12": {
+    "job_id": 12,
+    "short_name": "LTW",
+    "job_name_en": "Leatherworker",
+    "job_name_zh": "制革匠",
+    "job_name_ja": "革細工師",
+    "job_icon_url": "/image/game-job/companion/leatherworker.png"
+  },
+  "13": {
+    "job_id": 13,
+    "short_name": "WVR",
+    "job_name_en": "Weaver",
+    "job_name_zh": "裁衣匠",
+    "job_name_ja": "裁縫師",
+    "job_icon_url": "/image/game-job/companion/weaver.png"
+  },
+  "14": {
+    "job_id": 14,
+    "short_name": "ALC",
+    "job_name_en": "Alchemist",
+    "job_name_zh": "炼金术士",
+    "job_name_ja": "錬金術師",
+    "job_icon_url": "/image/game-job/companion/alchemist.png"
+  },
+  "15": {
+    "job_id": 15,
+    "short_name": "CUL",
+    "job_name_en": "Culinarian",
+    "job_name_zh": "烹调师",
+    "job_name_ja": "調理師",
+    "job_icon_url": "/image/game-job/companion/culinarian.png"
+  },
+  "16": {
+    "job_id": 16,
+    "short_name": "MIN",
+    "job_name_en": "Miner",
+    "job_name_zh": "采矿工",
+    "job_name_ja": "採掘師",
+    "job_icon_url": "/image/game-job/companion/miner.png"
+  },
+  "17": {
+    "job_id": 17,
+    "short_name": "BTN",
+    "job_name_en": "Botanist",
+    "job_name_zh": "园艺工",
+    "job_name_ja": "園芸師",
+    "job_icon_url": "/image/game-job/companion/botanist.png"
+  },
+  "18": {
+    "job_id": 18,
+    "short_name": "FSH",
+    "job_name_en": "Fisher",
+    "job_name_zh": "捕鱼人",
+    "job_name_ja": "漁師",
+    "job_icon_url": "/image/game-job/companion/fisher.png"
+  },
+  "19": {
+    "job_id": 19,
+    "short_name": "PLD",
+    "job_name_en": "Paladin",
+    "job_name_zh": "骑士",
+    "job_name_ja": "ナイト",
+    "job_icon_url": "/image/game-job/companion/paladin.png"
+  },
+  "20": {
+    "job_id": 20,
+    "short_name": "MNK",
+    "job_name_en": "Monk",
+    "job_name_zh": "武僧",
+    "job_name_ja": "モンク",
+    "job_icon_url": "/image/game-job/companion/monk.png"
+  },
+  "21": {
+    "job_id": 21,
+    "short_name": "WAR",
+    "job_name_en": "Warrior",
+    "job_name_zh": "战士",
+    "job_name_ja": "戦士",
+    "job_icon_url": "/image/game-job/companion/warrior.png"
+  },
+  "22": {
+    "job_id": 22,
+    "short_name": "DRG",
+    "job_name_en": "Dragoon",
+    "job_name_zh": "龙骑士",
+    "job_name_ja": "竜騎士",
+    "job_icon_url": "/image/game-job/companion/dragoon.png"
+  },
+  "23": {
+    "job_id": 23,
+    "short_name": "BRD",
+    "job_name_en": "Bard",
+    "job_name_zh": "吟游诗人",
+    "job_name_ja": "吟遊詩人",
+    "job_icon_url": "/image/game-job/companion/bard.png"
+  },
+  "24": {
+    "job_id": 24,
+    "short_name": "WHM",
+    "job_name_en": "White Mage",
+    "job_name_zh": "白魔法师",
+    "job_name_ja": "白魔道士",
+    "job_icon_url": "/image/game-job/companion/whitemage.png"
+  },
+  "25": {
+    "job_id": 25,
+    "short_name": "BLM",
+    "job_name_en": "Black Mage",
+    "job_name_zh": "黑魔法师",
+    "job_name_ja": "黒魔道士",
+    "job_icon_url": "/image/game-job/companion/blackmage.png"
+  },
+  "27": {
+    "job_id": 27,
+    "short_name": "SMN",
+    "job_name_en": "Summoner",
+    "job_name_zh": "召唤师",
+    "job_name_ja": "召喚士",
+    "job_icon_url": "/image/game-job/companion/summoner.png"
+  },
+  "28": {
+    "job_id": 28,
+    "short_name": "SCH",
+    "job_name_en": "Scholar",
+    "job_name_zh": "学者",
+    "job_name_ja": "学者",
+    "job_icon_url": "/image/game-job/companion/scholar.png"
+  },
+  "30": {
+    "job_id": 30,
+    "short_name": "NIN",
+    "job_name_en": "Ninja",
+    "job_name_zh": "忍者",
+    "job_name_ja": "忍者",
+    "job_icon_url": "/image/game-job/companion/ninja.png"
+  },
+  "31": {
+    "job_id": 31,
+    "short_name": "MCH",
+    "job_name_en": "Machinist",
+    "job_name_zh": "机工士",
+    "job_name_ja": "機工士",
+    "job_icon_url": "/image/game-job/companion/machinist.png"
+  },
+  "32": {
+    "job_id": 32,
+    "short_name": "DRK",
+    "job_name_en": "Dark Knight",
+    "job_name_zh": "暗黑骑士",
+    "job_name_ja": "暗黒騎士",
+    "job_icon_url": "/image/game-job/companion/darkknight.png"
+  },
+  "33": {
+    "job_id": 33,
+    "short_name": "AST",
+    "job_name_en": "Astrologian",
+    "job_name_zh": "占星术士",
+    "job_name_ja": "占星術師",
+    "job_icon_url": "/image/game-job/companion/astrologian.png"
+  },
+  "34": {
+    "job_id": 34,
+    "short_name": "SAM",
+    "job_name_en": "Samurai",
+    "job_name_zh": "武士",
+    "job_name_ja": "侍",
+    "job_icon_url": "/image/game-job/companion/samurai.png"
+  },
+  "35": {
+    "job_id": 35,
+    "short_name": "RDM",
+    "job_name_en": "Red Mage",
+    "job_name_zh": "赤魔法师",
+    "job_name_ja": "赤魔道士",
+    "job_icon_url": "/image/game-job/companion/redmage.png"
+  },
+  "37": {
+    "job_id": 37,
+    "short_name": "GNB",
+    "job_name_en": "Gunbreaker",
+    "job_name_zh": "绝枪战士",
+    "job_name_ja": "ガンブレイカー",
+    "job_icon_url": "/image/game-job/companion/gunbreaker.png"
+  },
+  "38": {
+    "job_id": 38,
+    "short_name": "DNC",
+    "job_name_en": "Dancer",
+    "job_name_zh": "舞者",
+    "job_name_ja": "踊り子",
+    "job_icon_url": "/image/game-job/companion/dancer.png"
+  },
+  "39": {
+    "job_id": 39,
+    "short_name": "RPR",
+    "job_name_en": "Reaper",
+    "job_name_zh": "钐镰客",
+    "job_name_ja": "リーパー",
+    "job_icon_url": "/image/game-job/companion/reaper.png"
+  },
+  "40": {
+    "job_id": 40,
+    "short_name": "SGE",
+    "job_name_en": "Sage",
+    "job_name_zh": "贤者",
+    "job_name_ja": "賢者",
+    "job_icon_url": "/image/game-job/companion/sage.png"
+  },
+  "41": {
+    "job_id": 41,
+    "short_name": "VPR",
+    "job_name_en": "Viper",
+    "job_name_zh": "蝰蛇剑士",
+    "job_name_ja": "ヴァイパー",
+    "job_icon_url": "/image/game-job/companion/viper.png"
+  },
+  "42": {
+    "job_id": 42,
+    "short_name": "PCT",
+    "job_name_en": "Pictomancer",
+    "job_name_zh": "绘灵法师",
+    "job_name_ja": "ピクトマンサー",
+    "job_icon_url": "/image/game-job/companion/pictomancer.png"
+  }
+}

@@ -1,0 +1,46 @@
+/* 移动端全局样式覆盖
+ * 仅在 ≤ 767px 生效，桌面端（≥ 768px）完全不匹配，UI 零影响。
+ * 与 useIsMobile.ts 的 MOBILE_BREAKPOINT 保持一致。
+ */
+
+@media (max-width: 767px) {
+  /* === Header 内边距收紧 ===
+   * 覆盖 tailwind px-6（24px）→ 12px，给汉堡按钮留出空间 */
+  .app-header-inner {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  /* === Footer 隐藏第二行长版权声明 ===
+   * 第一行短版权保留，避免 56px 高度撑爆 */
+  .footer-notice {
+    display: none !important;
+  }
+
+  /* === 进度表格 cell padding 收紧 ===
+   * ProgressTable 默认 6px 12px，移动端减至 3px 4px */
+  .progress-table .n-data-table .n-data-table-th,
+  .progress-table .n-data-table .n-data-table-td {
+    padding: 3px 4px !important;
+  }
+
+  /* === n-table 字号缩小（魂晶计时器等原生表格） === */
+  .n-table {
+    font-size: 12px;
+  }
+  .n-table th,
+  .n-table td {
+    padding: 4px 6px !important;
+  }
+
+  /* === 标题间距收紧 === */
+  .n-h1 {
+    margin: 6px 0 10px !important;
+    font-size: 20px !important;
+  }
+
+  /* === 锚点下拉选择器（ProgressOverview 移动端） === */
+  .mobile-anchor-select {
+    margin-bottom: 12px;
+  }
+}
