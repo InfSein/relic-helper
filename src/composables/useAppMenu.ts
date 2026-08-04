@@ -2,6 +2,7 @@ import {
   HomeFilled,
   NoteAltFilled,
   EventNoteFilled,
+  AdsClickOutlined,
   AlignVerticalCenterOutlined,
   MenuBookOutlined,
 } from '@vicons/material'
@@ -67,6 +68,14 @@ const menuItems = computed(() : MenuItem[] => {
           icon: MenuBookOutlined,
           label: '黄道文书图鉴',
           routeKey: '/relic/book',
+        })
+      }
+      else if (group.rtkey === 'phantom') {
+        items.push({
+          type: 'router',
+          icon: AdsClickOutlined,
+          label: '战斗的记忆',
+          routeKey: '/phantom/memo',
         })
       }
 

@@ -29,6 +29,11 @@ const router = createRouter({
       component: () => import('@/views/relic/BookHelper.vue'),
     },
     {
+      path: '/phantom/memo',
+      name: 'PhantomMemoHelper',
+      component: () => import('@/views/phantom/MartialMemoHelper.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       meta: {
