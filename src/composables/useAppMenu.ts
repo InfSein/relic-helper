@@ -5,6 +5,7 @@ import {
   AdsClickOutlined,
   AlignVerticalCenterOutlined,
   MenuBookOutlined,
+  CalculateOutlined,
 } from '@vicons/material'
 import { relicData } from '@/assets/data'
 import { renderIcon } from '@/utils/ui'
@@ -53,6 +54,12 @@ const menuItems = computed(() : MenuItem[] => {
           icon: EventNoteFilled,
           label: '概览',
           routeKey: `/${group.rtkey}/overview`,
+        },
+        {
+          type: 'router',
+          icon: CalculateOutlined,
+          label: '素材统计',
+          routeKey: `/${group.rtkey}/demand`,
         }
       ]
 

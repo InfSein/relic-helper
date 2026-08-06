@@ -53,3 +53,4 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+.vscode/private-folder-alias.json

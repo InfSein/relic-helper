@@ -4,6 +4,7 @@ import XivMarkdown from '@/components/ui/XivMarkdown.vue'
 import ProgressTable from '@/components/ProgressTable.vue'
 import { stageGuides, summaries } from '@/assets/contents'
 import { useStore } from '@/stores'
+import DemandSummaryPopover from '@/components/DemandSummaryPopover.vue'
 
 const router = useRouter()
 
@@ -53,18 +54,27 @@ const defaultExpandedKeys = computed(() => {
 
 <template>
   <div class="p-4">
-    <n-h1>{{ groupData?.name_zh }} — 概览</n-h1>
+    <n-h1 class="flex items-center gap-2">
+      <span>{{ groupData?.name_zh }} — 概览</span>
+      <DemandSummaryPopover v-if="groupData" :relic-group="groupData" target-scope="all" />
+    </n-h1>
     <XivMarkdown v-if="summaries[groupKey]" :content="summaries[groupKey]" />
     <template v-for="stage in stages" :key="stage.key">
       <n-collapse v-if="stage.guide" arrow-placement="right" class="n-collapse-fix" :default-expanded-names="defaultExpandedKeys.includes(stage.key) ? [stage.key] : []">
         <n-collapse-item :name="stage.key">
           <template #header>
-            <n-h2>{{ stage.name_zh }}</n-h2>
+            <div class="flex items-center gap-2">
+              <n-h2 class="mb-0!">{{ stage.name_zh }}</n-h2>
+              <DemandSummaryPopover v-if="groupData" :relic-group="groupData" target-scope="stage" :stage-index="stage.index" />
+            </div>
           </template>
           <XivMarkdown :content="stage.guide" />
         </n-collapse-item>
       </n-collapse>
-      <n-h2 v-else>{{ stage.name_zh }}</n-h2>
+      <div v-else class="flex items-center gap-2 my-4">
+        <n-h2 class="mb-0!">{{ stage.name_zh }}</n-h2>
+        <DemandSummaryPopover v-if="groupData" :relic-group="groupData" target-scope="stage" :stage-index="stage.index" />
+      </div>
       <ProgressTable
         :relicGroup="groupData"
         :show-stage-index="stage.index"

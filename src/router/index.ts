@@ -19,6 +19,11 @@ const router = createRouter({
       component: () => import('@/views/RelicGroupOverview.vue'),
     },
     {
+      path: '/:groupKey/demand',
+      name: 'RelicDemandStats',
+      component: () => import('@/views/RelicDemandStats.vue'),
+    },
+    {
       path: '/relic/atma',
       name: 'RelicAtmaHelper',
       component: () => import('@/views/relic/AtmaHelper.vue'),

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { darkTheme, lightTheme } from 'naive-ui'
 import {
-  DarkModeTwotone, LightModeTwotone, MenuOutlined,
+  DarkModeTwotone, LightModeTwotone, MenuOutlined, ImportExportOutlined,
 } from '@vicons/material'
 import { RouterView } from 'vue-router'
 import Dialog from './components/ui/Dialog.vue'
+import ProgressImportExportModal from '@/components/ProgressImportExportModal.vue'
 import AppLogo from '@/assets/icons/app-logo.svg?url'
 import GithubIcon from '@/assets/icons/external/github.svg'
 import useAppMenu from '@/composables/useAppMenu'
@@ -19,6 +20,7 @@ const { menuData, appMenuOptions } = useAppMenu()
 const store = useStore()
 
 const dialogRef = ref<InstanceType<typeof Dialog> | null>(null)
+const showImportExportModal = ref(false)
 
 onMounted(async () => {
   // 注册对话框
@@ -34,13 +36,23 @@ const appHeaderButtons = computed(() => {
   return [
     {
       key: 'switch_theme',
+      title: theme.value === 'light' ? '深色模式' : '浅色模式',
       icon: theme.value === 'light' ? LightModeTwotone : DarkModeTwotone,
       onClick: () => {
         switchTheme()
       }
     },
     {
+      key: 'import_export',
+      title: '导入/导出进度',
+      icon: ImportExportOutlined,
+      onClick: () => {
+        showImportExportModal.value = true
+      }
+    },
+    {
       key: 'external_github',
+      title: 'GitHub 仓库',
       icon: GithubIcon,
       onClick: () => {
         window.open(AppInfo.repoUrl)
@@ -112,14 +124,14 @@ watch(isMobile, (mobile) => {
               </div>
               <div />
               <div class="flex items-center gap-1">
-                <n-button
-                  v-for="item in appHeaderButtons"
-                  :key="item.key"
-                  quaternary
-                  @click="item.onClick"
-                >
-                  <n-icon :size="18"><component :is="item.icon" /></n-icon>
-                </n-button>
+                <n-tooltip v-for="item in appHeaderButtons" :key="item.key">
+                  <template #trigger>
+                    <n-button quaternary @click="item.onClick">
+                      <n-icon :size="18"><component :is="item.icon" /></n-icon>
+                    </n-button>
+                  </template>
+                  {{ item.title }}
+                </n-tooltip>
               </div>
             </div>
           </n-layout-header>
@@ -169,6 +181,7 @@ watch(isMobile, (mobile) => {
           </n-drawer>
 
           <Dialog ref="dialogRef" />
+          <ProgressImportExportModal v-model:show="showImportExportModal" />
         </n-layout>
       </n-message-provider>
     </n-dialog-provider>
