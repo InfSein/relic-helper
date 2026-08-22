@@ -39,6 +39,11 @@ const router = createRouter({
       component: () => import('@/views/phantom/MartialMemoHelper.vue'),
     },
     {
+      path: '/changelog',
+      name: 'Changelog',
+      component: () => import('@/views/ChangelogView.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       meta: {

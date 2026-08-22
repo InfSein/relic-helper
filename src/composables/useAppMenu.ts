@@ -6,6 +6,7 @@ import {
   AlignVerticalCenterOutlined,
   MenuBookOutlined,
   CalculateOutlined,
+  HistoryOutlined,
 } from '@vicons/material'
 import { relicData } from '@/assets/data'
 import { renderIcon } from '@/utils/ui'
@@ -88,6 +89,16 @@ const menuItems = computed(() : MenuItem[] => {
 
       return items
     }).flat(),
+    {
+      type: 'title',
+      label: menuData.menuCollapsed ? '关于' : '关于项目',
+    },
+    {
+      type: 'router',
+      icon: HistoryOutlined,
+      label: '更新日志',
+      routeKey: '/changelog',
+    },
     /*
     {
       type: 'title',

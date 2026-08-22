@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
+import { computed, ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { relicGroupMapByRtKey, type RelicRouteKey } from '@/assets/data'
 import { useStore } from '@/stores'
@@ -18,7 +18,6 @@ import {
 
 const router = useRouter()
 const store = useStore()
-const message = useMessage()
 const { isMobile } = useIsMobile()
 
 const groupKey = computed(() => router.currentRoute.value.params.groupKey as RelicRouteKey)
@@ -37,9 +36,22 @@ const activePageIndex = ref<number>(0)
 const localTargetProgress = ref<Record<number, number>>({})
 const localTargetPreProgress = ref<number>(-1)
 
+// 是否正在初始化标识，避免初始化时触发 watcher 进行多余保存
+const isInitializing = ref(false)
+
+// 保存目标进度到用户数据
+const saveTargetProgress = () => {
+  if (!groupData.value || isInitializing.value) return
+  const gid = groupData.value.id
+  store.userData.relicTargetProgress[gid] = { ...localTargetProgress.value }
+  store.userData.relicTargetPreProgress[gid] = localTargetPreProgress.value
+  store.updateUserData()
+}
+
 // 初始化本地目标进度
 const initLocalTarget = () => {
   if (!groupData.value) return
+  isInitializing.value = true
   const gid = groupData.value.id
   const savedTarget = store.userData.relicTargetProgress[gid]
   const savedPreTarget = store.userData.relicTargetPreProgress[gid]
@@ -59,11 +71,31 @@ const initLocalTarget = () => {
   } else {
     localTargetPreProgress.value = groupData.value.stage_prereqs ? groupData.value.stage_prereqs.length - 1 : -1
   }
+
+  // 若 store 中尚未记录目标进度，保存默认设置
+  if (!savedTarget) {
+    store.userData.relicTargetProgress[gid] = { ...localTargetProgress.value }
+    store.userData.relicTargetPreProgress[gid] = localTargetPreProgress.value
+    store.updateUserData()
+  }
+
+  nextTick(() => {
+    isInitializing.value = false
+  })
 }
 
 watch(groupData, () => {
   initLocalTarget()
 }, { immediate: true })
+
+// 监听目标进度更改并立刻记录保存
+watch(
+  [localTargetProgress, localTargetPreProgress],
+  () => {
+    saveTargetProgress()
+  },
+  { deep: true }
+)
 
 // 快捷操作
 const selectAllTargets = () => {
@@ -101,13 +133,9 @@ const demandResult = computed<RelicDemandResult | null>(() => {
   )
 })
 
-// 保存目标进度并滑向统计结果页面
+// 确认目标进度并滑向统计结果页面
 const confirmAndGoToStats = () => {
-  if (!groupData.value) return
-  const gid = groupData.value.id
-  store.userData.relicTargetProgress[gid] = { ...localTargetProgress.value }
-  store.userData.relicTargetPreProgress[gid] = localTargetPreProgress.value
-  store.updateUserData()
+  saveTargetProgress()
   activePageIndex.value = 1
 }
 
@@ -176,13 +204,12 @@ onUnmounted(() => {
       >
         <!-- 分页面 0：当前进度与目标进度设置 -->
         <div class="w-1/2 pr-2 flex flex-col gap-4">
-          <!-- 确认按钮顶部操作栏 -->
           <div class="flex justify-end items-center">
             <n-button size="small" secondary type="primary" :icon-placement="'right'" @click="confirmAndGoToStats">
               <template #icon>
                 <n-icon class="ml-1"><ArrowForwardOutlined /></n-icon>
               </template>
-              确认目标进度
+              查看素材统计
             </n-button>
           </div>
 

@@ -162,6 +162,9 @@ watch(isMobile, (mobile) => {
             <div class="h-full px-6 flex flex-col items-center justify-center">
               <n-text depth="3" class="text-sm">
                 &copy; InfSein, 2026. All rights reserved.
+                <template v-if="!isMobile">
+                  LAST UPDATE: {{ AppInfo.lastUpdate.date }} (Patch {{ AppInfo.lastUpdate.patch }})
+                </template>
                 </n-text>
               <n-text depth="3" class="text-xs footer-notice">
                 Content contributed by third parties remains the property of their respective owners.
