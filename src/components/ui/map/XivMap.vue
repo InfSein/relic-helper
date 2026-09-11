@@ -29,18 +29,58 @@ const getPositionStyle = (x: number, y: number) => {
 const getAetheryteName = (aetheryte: XivMapAetheryteInfo) => {
   return aetheryte[`name_zh`]
 }
+
+const isMapLoaded = ref(false)
+const mapImageRef = ref<InstanceType<typeof XivFARImage> | null>(null)
+
+const handleMapLoad = () => {
+  isMapLoaded.value = true
+}
+
+const checkImageLoaded = () => {
+  const imgEl = (mapImageRef.value?.$el ?? null) as HTMLImageElement | null
+  if (imgEl && imgEl.complete && imgEl.naturalWidth > 0) {
+    isMapLoaded.value = true
+  }
+}
+
+watch(
+  () => props.mapData.map_src,
+  () => {
+    isMapLoaded.value = false
+    nextTick(() => {
+      checkImageLoaded()
+    })
+  }
+)
+
+onMounted(() => {
+  nextTick(() => {
+    checkImageLoaded()
+  })
+})
 </script>
 
 <template>
   <div class="map-wrapper">
     <div class="map-content" :style="{ width: mapSize + 'px', height: mapSize + 'px' }">
+      <!-- 骨架屏 -->
+      <n-skeleton
+        v-if="!isMapLoaded"
+        class="map-skeleton"
+        :width="mapSize"
+        :height="mapSize"
+        :sharp="true"
+      />
       <!-- 地图 -->
       <XivFARImage
+        ref="mapImageRef"
         class="map-image"
         :size="mapSize"
         :src="mapData.map_src"
+        @load="handleMapLoad"
       />
-      <div class="markers-overlay">
+      <div v-show="isMapLoaded" class="markers-overlay">
         <!-- 目的地旗帜 -->
         <XivFARImage
           class="marker flag"
@@ -81,8 +121,21 @@ const getAetheryteName = (aetheryte: XivMapAetheryteInfo) => {
 
   .map-content {
     position: relative;
+    overflow: hidden;
+
+    .map-skeleton {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
 
     .map-image {
+      display: block;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
     }
     .markers-overlay {

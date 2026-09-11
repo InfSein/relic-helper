@@ -26,10 +26,19 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits<{
+  (e: 'load', event: Event): void
+  (e: 'error', event: Event): void
+}>()
+
 const getUrl = () => {
   return props.src.replace('~ApiBase', props.apiBase)
 }
+const onImageLoad = (event: Event) => {
+  emit('load', event)
+}
 const onImageLoadError = (event: Event) => {
+  emit('error', event)
   const img = event.target as HTMLImageElement
   const new_src = img.src.replace(props.apiBase, props.apiBaseSpare)
   if (new_src === img.src) return
@@ -45,6 +54,7 @@ const onImageLoadError = (event: Event) => {
     :width="size"
     :height="size"
     class="no-select"
+    @load="onImageLoad"
     @error="onImageLoadError"
   />
 </template>
