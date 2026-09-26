@@ -567,7 +567,7 @@ function getGatherJobSvgStyle(jobId: number) {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-sub);
+  color: var(--app-color-text-sub);
 }
 
 .map-container {

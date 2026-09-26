@@ -265,7 +265,7 @@ const openInBestCraft = () => {
     <div class="base-info">
       <XivFARImage
         class="item-icon"
-        :src="itemInfo.iconUrl"
+        :src="itemInfo"
         :size="35"
       />
       <div class="item-names">
@@ -362,7 +362,7 @@ const openInBestCraft = () => {
             <HelpButton
               :size="12"
               icon="question"
-              color="var(--color-info)"
+              color="var(--app-color-info)"
               pop-type="popover"
               :placement="'right-start'"
               style="padding: 0;"
@@ -598,8 +598,8 @@ const openInBestCraft = () => {
             </div>
           </div>
           <div class="other-attrs">
-            <div v-if="!itemInfo.craftInfo?.qsable" style="color: var(--color-error);">{{ '无法进行简易制作' }}</div>
-            <div v-if="!itemInfo.craftInfo?.hqable" style="color: var(--color-error);">{{ '无法制作优质道具' }}</div>
+            <div v-if="!itemInfo.craftInfo?.qsable" style="color: var(--app-color-error);">{{ '无法进行简易制作' }}</div>
+            <div v-if="!itemInfo.craftInfo?.hqable" style="color: var(--app-color-error);">{{ '无法制作优质道具' }}</div>
           </div>
         </div>
       </div>
@@ -646,7 +646,7 @@ const openInBestCraft = () => {
       .main span.extra-name {
         line-height: 1;
         font-size: calc(var(--n-font-size, 14px) - 2px);
-        color: var(--color-text-sub);
+        color: var(--app-color-text-sub);
       }
     }
   }

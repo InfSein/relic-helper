@@ -58,25 +58,25 @@ withDefaults(defineProps<Props>(), {
   justify-content: space-between;
   gap: 12px;
   padding: 10px 16px;
-  background-color: var(--color-background-embedded);
-  border: 1px solid var(--color-border);
-  border-left: 4px solid var(--color-border);
+  background-color: var(--app-color-background-embedded);
+  border: 1px solid var(--app-color-border);
+  border-left: 4px solid var(--app-color-border);
   border-radius: 12px;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .changelog-version-header:hover {
-  border-color: var(--color-primary);
+  border-color: var(--app-color-primary);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }
 
 /* 最新版本高亮样式 */
 .changelog-version-header.is-latest {
-  border-left-color: var(--color-primary);
+  border-left-color: var(--app-color-primary);
   background: linear-gradient(
     90deg,
-    var(--color-primary-sub) 0%,
-    var(--color-background-embedded) 45%
+    var(--app-color-primary-sub) 0%,
+    var(--app-color-background-embedded) 45%
   );
 }
 
@@ -94,14 +94,14 @@ withDefaults(defineProps<Props>(), {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background-color: var(--color-background-hover);
-  color: var(--color-text-sub);
+  background-color: var(--app-color-background-hover);
+  color: var(--app-color-text-sub);
   flex-shrink: 0;
   transition: transform 0.2s ease;
 }
 
 .version-icon-box.latest-icon {
-  background-color: var(--color-primary);
+  background-color: var(--app-color-primary);
   color: #fff;
   box-shadow: 0 2px 8px rgba(24, 160, 88, 0.35);
 }
@@ -122,12 +122,12 @@ withDefaults(defineProps<Props>(), {
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: 0.5px;
-  color: var(--color-text);
+  color: var(--app-color-text);
   line-height: 1.2;
 }
 
 .is-latest .version-number {
-  color: var(--color-primary);
+  color: var(--app-color-primary);
 }
 
 .latest-badge {
@@ -143,7 +143,7 @@ withDefaults(defineProps<Props>(), {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--color-primary);
+  background-color: var(--app-color-primary);
   margin-right: 5px;
   animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
@@ -172,9 +172,9 @@ withDefaults(defineProps<Props>(), {
   gap: 5px;
   padding: 3px 10px;
   border-radius: 6px;
-  background-color: var(--color-background);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-sub);
+  background-color: var(--app-color-background);
+  border: 1px solid var(--app-color-border);
+  color: var(--app-color-text-sub);
   font-family: 'Michroma', monospace, sans-serif;
   font-size: 0.8rem;
   user-select: none;

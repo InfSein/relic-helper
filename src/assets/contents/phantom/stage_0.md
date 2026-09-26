@@ -19,4 +19,4 @@
 
 对应新月岛区域也可参考：[战斗事件总结](https://ff14.huijiwiki.com/wiki/蜃景幻界新月岛_南征之章/战斗事件) | [半魂晶分布示意图](https://bbs.nga.cn/read.php?pid=832463545)
 
-<span style="color: var(--color-error);">前置任务只需要完成一次</span>，之后正式制作「幻境武器：半影」时只需要每把武器提供3个{{item:47750}}即可。
+<span style="color: var(--app-color-error);">前置任务只需要完成一次</span>，之后正式制作「幻境武器：半影」时只需要每把武器提供3个{{item:47750}}即可。

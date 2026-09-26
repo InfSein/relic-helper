@@ -11,7 +11,7 @@
     <n-alert type="info" title="内测中……" class="mt-1">
       <p>“肝武Helper”目前还在内测状态，各种功能都在不断完善之中。</p>
       <p>您的数据仍将被安全妥善地存储。欢迎试用并向我们反馈意见！</p>
-      <p>内测期间暂时和hqhelper用同一个群：<span style="color: var(--color-error);">721051298</span></p>
+      <p>内测期间暂时和hqhelper用同一个群：<span style="color: var(--app-color-error);">721051298</span></p>
     </n-alert>
   </div>
 </template>

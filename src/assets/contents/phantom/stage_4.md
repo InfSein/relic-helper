@@ -90,4 +90,4 @@
 
 好消息是不用你去打高难，坏消息是除了高难你全得打
 
-<span style="color: var(--color-error);">前置任务只需要完成一次</span>，之后即可将上一阶段的肝武免费升级为「幻境武器：秘影」。
+<span style="color: var(--app-color-error);">前置任务只需要完成一次</span>，之后即可将上一阶段的肝武免费升级为「幻境武器：秘影」。

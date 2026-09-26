@@ -66,17 +66,17 @@ const handleItemClick = (key: string | number, option: any) => {
   gap: 10px;
   padding: 11px 16px;
   font-size: 14px;
-  color: var(--color-text);
+  color: var(--app-color-text);
   cursor: pointer;
   transition: background-color .15s;
 }
 .menu-item:active {
-  background-color: var(--color-background-hover);
+  background-color: var(--app-color-background-hover);
 }
 .menu-group-title {
   padding: 8px 16px 4px;
   font-size: 12px;
-  color: var(--color-text-sub);
+  color: var(--app-color-text-sub);
   font-weight: 600;
 }
 </style>

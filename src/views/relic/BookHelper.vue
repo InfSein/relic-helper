@@ -394,10 +394,10 @@ const handleBookItemClick = (id: number) => {
   cursor: pointer;
 
   &:hover {
-    background-color: var(--color-background-hover);
+    background-color: var(--app-color-background-hover);
   }
   &.focused {
-    background-color: var(--color-primary);
+    background-color: var(--app-color-primary);
   }
 }
 
@@ -407,22 +407,22 @@ const handleBookItemClick = (id: number) => {
   gap: 12px;
   padding: 12px;
   border-radius: 8px;
-  background-color: var(--color-background-embedded);
-  border: 1px solid var(--color-border);
+  background-color: var(--app-color-background-embedded);
+  border: 1px solid var(--app-color-border);
   cursor: pointer;
   height: 76px;
   box-sizing: border-box;
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: var(--color-background-hover);
-    border-color: var(--color-primary);
+    background-color: var(--app-color-background-hover);
+    border-color: var(--app-color-primary);
   }
 
   &.focused {
-    border-color: var(--color-primary);
-    background-color: var(--color-background-hover);
-    box-shadow: 0 0 0 1px var(--color-primary);
+    border-color: var(--app-color-primary);
+    background-color: var(--app-color-background-hover);
+    box-shadow: 0 0 0 1px var(--app-color-primary);
   }
 
   .book-card-icon {
@@ -444,7 +444,7 @@ const handleBookItemClick = (id: number) => {
   .card-title {
     font-size: 15px;
     font-weight: 500;
-    color: var(--color-text);
+    color: var(--app-color-text);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -452,7 +452,7 @@ const handleBookItemClick = (id: number) => {
 
   .card-sub-text {
     font-size: 12px;
-    color: var(--color-text-sub);
+    color: var(--app-color-text-sub);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -523,10 +523,10 @@ const handleBookItemClick = (id: number) => {
   overflow: hidden;
   cursor: pointer;
   border: 2px solid transparent;
-  background: var(--color-background-embedded);
+  background: var(--app-color-background-embedded);
 }
 .book-grid-item-mobile.focused {
-  border-color: var(--color-primary);
+  border-color: var(--app-color-primary);
 }
 .book-grid-item-mobile.size-lg {
   width: 64px;
@@ -543,15 +543,15 @@ const handleBookItemClick = (id: number) => {
 }
 .book-footer-mobile {
   padding: 8px 12px;
-  background: var(--color-background-embedded);
+  background: var(--app-color-background-embedded);
   border-radius: 6px;
   font-size: 13px;
-  color: var(--color-text);
+  color: var(--app-color-text);
   min-height: 36px;
 }
 .book-map-mobile {
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
+  background: var(--app-color-background);
+  border: 1px solid var(--app-color-border);
   border-radius: 8px;
   padding: 12px;
 }
@@ -559,7 +559,7 @@ const handleBookItemClick = (id: number) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-sub);
+  color: var(--app-color-text-sub);
   font-size: 13px;
   min-height: 120px;
 }

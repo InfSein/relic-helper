@@ -230,9 +230,9 @@ th {
   font-weight: bold;
 }
 td.matched {
-  color: var(--color-primary) !important;
-  background-color: var(--color-primary-sub) !important;
-  border: 1px solid var(--color-primary) !important;
+  color: var(--app-color-primary) !important;
+  background-color: var(--app-color-primary-sub) !important;
+  border: 1px solid var(--app-color-primary) !important;
 
   &.hide-top {
     border-top-color: transparent !important;
@@ -249,8 +249,8 @@ td.matched {
   gap: 8px;
 }
 .atma-card {
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
+  background: var(--app-color-background);
+  border: 1px solid var(--app-color-border);
   border-radius: 8px;
   padding: 10px 12px;
 }
@@ -263,7 +263,7 @@ td.matched {
 }
 .atma-area {
   font-size: 12px;
-  color: var(--color-text-sub);
+  color: var(--app-color-text-sub);
   white-space: nowrap;
 }
 .atma-card-body {
@@ -273,7 +273,7 @@ td.matched {
 }
 .atma-cell {
   position: relative;
-  background: var(--color-background-embedded);
+  background: var(--app-color-background-embedded);
   border-radius: 6px;
   padding: 6px 4px;
   text-align: center;
@@ -284,9 +284,9 @@ td.matched {
   justify-content: center;
 }
 .atma-cell.matched {
-  background: var(--color-primary-sub);
-  color: var(--color-primary);
-  border-color: var(--color-primary);
+  background: var(--app-color-primary-sub);
+  color: var(--app-color-primary);
+  border-color: var(--app-color-primary);
 }
 .atma-cell-label {
   font-size: 10px;

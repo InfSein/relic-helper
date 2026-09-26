@@ -129,8 +129,8 @@ defineExpose({
   justify-content: flex-end;
   gap: 8px;
   padding: 14px 16px;
-  background: var(--color-background-action);
-  border-top: 1px solid var(--color-border);
+  background: var(--app-color-background-action);
+  border-top: 1px solid var(--app-color-border);
 
   .dialog-button {
     min-width: 90px;

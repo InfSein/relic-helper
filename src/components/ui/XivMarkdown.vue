@@ -186,14 +186,14 @@ watch(() => props.content, () => {
 }
 
 .xiv-markdown :deep(th), .xiv-markdown :deep(td) {
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--app-color-border);
   padding: 8px;
   text-align: left;
 }
 
 .xiv-markdown :deep(th) {
   font-weight: bold;
-  background-color: var(--color-background-hover);
+  background-color: var(--app-color-background-hover);
 }
 
 /* base.css 全局 font-weight: normal 覆盖了 strong/b 的默认 bold，在此恢复 */

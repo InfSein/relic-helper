@@ -185,7 +185,7 @@ const containerStyle = computed(() => {
         v-show="!hideIcon"
         class="select-none"
         :size="imgSize ?? 14"
-        :src="itemInfo.iconUrl"
+        :src="itemInfo"
         :title="(hideName && hidePopIcon) ? getItemName() : ''"
       />
       <span v-show="!hideName" class="item-name">
@@ -216,7 +216,7 @@ const containerStyle = computed(() => {
         v-show="!hideIcon"
         class="select-none"
         :size="imgSize ?? 14"
-        :src="itemInfo.iconUrl"
+        :src="itemInfo"
         :title="(hideName && hidePopIcon) ? getItemName() : ''"
       />
       <div class="item-text-container">
@@ -311,7 +311,7 @@ const containerStyle = computed(() => {
   padding: 1px 4px;
 
   &:hover {
-    background-color: var(--color-background-hover);
+    background-color: var(--app-color-background-hover);
   }
 }
 </style>

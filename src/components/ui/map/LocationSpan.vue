@@ -148,7 +148,7 @@ const handleOpenCafeMap = () => {
   padding: 1px 4px;
 
   &:hover {
-    background-color: var(--color-background-hover);
+    background-color: var(--app-color-background-hover);
   }
 }
 .map-button {
@@ -172,7 +172,7 @@ const handleOpenCafeMap = () => {
     }
     .subs {
       font-size: calc(var(--n-font-size) - 2px);
-      color: var(--color-text-sub);
+      color: var(--app-color-text-sub);
     }
   }
   .footer {

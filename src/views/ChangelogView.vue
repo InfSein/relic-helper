@@ -173,8 +173,8 @@ const getCategoryClass = (category: string) => {
 }
 
 .version-card {
-  border: 1px solid var(--color-border);
-  background-color: var(--color-background);
+  border: 1px solid var(--app-color-border);
+  background-color: var(--app-color-background);
   border-radius: 14px;
   padding: 16px;
   transition: all 0.25s ease;
@@ -206,7 +206,7 @@ const getCategoryClass = (category: string) => {
   align-items: baseline;
   gap: 10px;
   padding: 8px 0;
-  border-bottom: 1px dashed var(--color-border);
+  border-bottom: 1px dashed var(--app-color-border);
 }
 
 .changelog-item:last-child {
@@ -249,9 +249,9 @@ const getCategoryClass = (category: string) => {
 
 /* 默认分类 */
 .tag-default {
-  background-color: var(--color-background-hover);
-  color: var(--color-text-sub);
-  border: 1px solid var(--color-border);
+  background-color: var(--app-color-background-hover);
+  color: var(--app-color-text-sub);
+  border: 1px solid var(--app-color-border);
 }
 
 /* 深色模式下适配分类标签 */
@@ -277,7 +277,7 @@ const getCategoryClass = (category: string) => {
   flex: 1;
   min-width: 0;
   font-size: 0.85rem;
-  color: var(--color-text);
+  color: var(--app-color-text);
   line-height: 1.6;
 }
 
