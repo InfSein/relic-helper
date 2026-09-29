@@ -133,6 +133,33 @@ const demandResult = computed<RelicDemandResult | null>(() => {
   )
 })
 
+// 检查物品是否标记为已拥有
+const isItemOwned = (itemId: number, currentNeedCount: number): boolean => {
+  if (!groupData.value) return false
+  const gid = groupData.value.id
+  const savedCount = store.userData.demandItemOwned?.[gid]?.[itemId]
+  if (savedCount === undefined) return false
+  return savedCount >= currentNeedCount
+}
+
+// 切换已拥有状态，勾选时持久化保存当前需求数量
+const toggleItemOwned = (itemId: number, currentNeedCount: number, checked: boolean) => {
+  if (!groupData.value) return
+  const gid = groupData.value.id
+  if (!store.userData.demandItemOwned) {
+    store.userData.demandItemOwned = {}
+  }
+  if (!store.userData.demandItemOwned[gid]) {
+    store.userData.demandItemOwned[gid] = {}
+  }
+  if (checked) {
+    store.userData.demandItemOwned[gid][itemId] = currentNeedCount
+  } else {
+    delete store.userData.demandItemOwned[gid][itemId]
+  }
+  store.updateUserData()
+}
+
 // 确认目标进度并滑向统计结果页面
 const confirmAndGoToStats = () => {
   saveTargetProgress()
@@ -282,8 +309,17 @@ onUnmounted(() => {
                   </n-alert>
 
                   <div class="flex flex-col gap-2">
-                    <div v-for="item in demandResult.tomestoneItems" :key="item.itemId" class="p-1.5 bg-slate-500/5 rounded flex justify-between items-center">
+                    <div
+                      v-for="item in demandResult.tomestoneItems"
+                      :key="item.itemId"
+                      class="p-1.5 bg-slate-500/5 rounded flex justify-between items-center transition-opacity"
+                      :class="{ 'opacity-40': isItemOwned(item.itemId, item.needCount) }"
+                    >
                       <ItemSpan :item-info="item.itemInfo" :amount="item.needCount" show-amount />
+                      <n-checkbox
+                        :checked="isItemOwned(item.itemId, item.needCount)"
+                        @update:checked="(val: boolean) => toggleItemOwned(item.itemId, item.needCount, val)"
+                      />
                     </div>
                   </div>
                 </n-card>
@@ -297,8 +333,17 @@ onUnmounted(() => {
                     无制作道具需求
                   </div>
                   <div v-else class="flex flex-col gap-2">
-                    <div v-for="item in demandResult.craftItems" :key="item.itemId" class="p-1.5 bg-slate-500/5 rounded">
+                    <div
+                      v-for="item in demandResult.craftItems"
+                      :key="item.itemId"
+                      class="p-1.5 bg-slate-500/5 rounded flex justify-between items-center transition-opacity"
+                      :class="{ 'opacity-40': isItemOwned(item.itemId, item.needCount) }"
+                    >
                       <ItemSpan :item-info="item.itemInfo" :amount="item.needCount" show-amount />
+                      <n-checkbox
+                        :checked="isItemOwned(item.itemId, item.needCount)"
+                        @update:checked="(val: boolean) => toggleItemOwned(item.itemId, item.needCount, val)"
+                      />
                     </div>
                   </div>
                 </n-card>
@@ -312,8 +357,17 @@ onUnmounted(() => {
                     无其他道具需求
                   </div>
                   <div v-else class="flex flex-col gap-2">
-                    <div v-for="item in demandResult.otherItems" :key="item.itemId" class="p-1.5 bg-slate-500/5 rounded">
+                    <div
+                      v-for="item in demandResult.otherItems"
+                      :key="item.itemId"
+                      class="p-1.5 bg-slate-500/5 rounded flex justify-between items-center transition-opacity"
+                      :class="{ 'opacity-40': isItemOwned(item.itemId, item.needCount) }"
+                    >
                       <ItemSpan :item-info="item.itemInfo" :amount="item.needCount" show-amount />
+                      <n-checkbox
+                        :checked="isItemOwned(item.itemId, item.needCount)"
+                        @update:checked="(val: boolean) => toggleItemOwned(item.itemId, item.needCount, val)"
+                      />
                     </div>
                   </div>
                 </n-card>

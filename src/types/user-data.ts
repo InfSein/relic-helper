@@ -22,6 +22,11 @@ export interface UserData {
    * @struct `relicId` -> `stageIndex`
    */
   relicTargetPreProgress: Record<number, number>
+  /**
+   * 素材统计：物品已拥有标记
+   * @struct `relicGroupId` -> (`itemId` -> 勾选时的需求数量)
+   */
+  demandItemOwned: Record<number, Record<number, number>>
 }
 
 export type UserDataKey = keyof UserData;
@@ -55,6 +60,12 @@ const defaultUserData : UserData = {
       relicGroup.stage_prereqs ? relicGroup.stage_prereqs.length - 1 : -1
     ])
   ),
+  demandItemOwned: Object.fromEntries(
+    Object.values(relicData.relicGroups).map(relicGroup => [
+      relicGroup.id,
+      {}
+    ])
+  ),
 }
 
 export const fixUserData = (userData?: UserData) => {
@@ -70,6 +81,9 @@ export const fixUserData = (userData?: UserData) => {
   ) as Record<number, Record<number, number>>
   userData.relicTargetProgress = assignDefaults(
     defaultUserData.relicTargetProgress, userData.relicTargetProgress || {}
+  ) as Record<number, Record<number, number>>
+  userData.demandItemOwned = assignDefaults(
+    defaultUserData.demandItemOwned, userData.demandItemOwned || {}
   ) as Record<number, Record<number, number>>
 
   return userData

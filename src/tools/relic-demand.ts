@@ -48,8 +48,30 @@ const classifyAndSortItems = (itemNeedMap: Map<number, number>): RelicDemandResu
     const itemInfo = getItemInfo(itemId)
     const tradeInfo = XivUnpackedTradeMap[itemId]
 
-    // 检查是否为点数道具 (costId为 28: 诗学 或 48: 数理)
-    if (tradeInfo && (tradeInfo.costId === 28 || tradeInfo.costId === 48)) {
+    // 检查是否直接就是点数货币 (28: 诗学, 48: 数理)
+    if (itemId === 28 || itemId === 48) {
+      const costName = itemInfo.name_zh || (itemId === 28 ? '亚拉戈诗学神典石' : '亚拉戈数理神典石')
+      tomestoneItems.push({
+        itemId,
+        itemInfo,
+        needCount,
+        category: 'tomestone',
+        tradeDetails: {
+          costId: itemId,
+          costName,
+          costCount: 1,
+          receiveCount: 1,
+          totalTomestonesNeeded: needCount,
+        },
+      })
+
+      // 汇总点数需求
+      const currentTomestoneTotal = tomestoneTotalsMap.get(itemId) || { costName, totalNeeded: 0 }
+      currentTomestoneTotal.totalNeeded += needCount
+      tomestoneTotalsMap.set(itemId, currentTomestoneTotal)
+    }
+    // 检查是否为点数兑换道具 (costId为 28: 诗学 或 48: 数理)
+    else if (tradeInfo && (tradeInfo.costId === 28 || tradeInfo.costId === 48)) {
       const costItemInfo = getItemInfo(tradeInfo.costId)
       const costName = costItemInfo.name_zh || (tradeInfo.costId === 28 ? '亚拉戈诗学神典石' : '亚拉戈数理神典石')
       const receiveCount = tradeInfo.receiveCount || 1

@@ -217,13 +217,13 @@ const getCategoryClass = (category: string) => {
 .item-tag {
   display: inline-flex;
   align-items: center;
-  font-size: 0.85rem;
+  font-size: 11px;
   font-weight: 600;
-  padding: 1px 7px;
+  padding: 2px 6px 1px 6px;
   border-radius: 4px;
   flex-shrink: 0;
   user-select: none;
-  line-height: 1.5;
+  line-height: 14px;
 }
 
 /* 新增 - 翠绿 */

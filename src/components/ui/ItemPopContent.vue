@@ -336,6 +336,7 @@ const openInBestCraft = () => {
           <div v-if="itemInfo.gatherInfo" class="extra">
             <XivFARImage
               class="icon"
+              :size="12"
               :src="XivJobs[itemInfo.gatherInfo.jobId].job_icon_url"
             />
             <p v-if="itemInfo.gatherInfo.level !== itemInfo.gatherInfo.nodelevel">
@@ -346,6 +347,7 @@ const openInBestCraft = () => {
           <div v-if="itemInfo.isFishingItem" class="extra">
             <XivFARImage
               class="icon"
+              :size="12"
               :src="XivJobs[18].job_icon_url"
             />
             <p>{{ getJobName(XivJobs[18]) }}</p>
@@ -545,6 +547,7 @@ const openInBestCraft = () => {
           <div class="extra">
             <XivFARImage
               class="icon"
+              :size="12"
               :src="XivJobs[itemInfo.craftInfo?.jobId].job_icon_url"
             />
             <p>
@@ -714,7 +717,7 @@ const openInBestCraft = () => {
           font-size: var(--size-small);
           line-height: 1;
 
-          img {
+          img, .icon {
             float: left;
             height: var(--size-small);
             display: block;
