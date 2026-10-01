@@ -7,7 +7,7 @@ import ProgressTable from '@/components/ProgressTable.vue'
 import TargetProgressTable from '@/components/TargetProgressTable.vue'
 import ItemSpan from '@/components/ui/ItemSpan.vue'
 import { getItemInfo } from '@/tools/item'
-import { calcRelicDemand, type RelicDemandResult } from '@/tools/relic-demand'
+import { calcRelicDemand, type RelicDemandResult, type TomestoneSummary } from '@/tools/relic-demand'
 import { useIsMobile } from '@/composables/useIsMobile'
 import {
   RefreshOutlined,
@@ -141,6 +141,29 @@ const isItemOwned = (itemId: number, currentNeedCount: number): boolean => {
   if (savedCount === undefined) return false
   return savedCount >= currentNeedCount
 }
+
+// 计算实际剩余所需的点数需求总计（排除已标记为完全收集的道具）
+const tomestoneSummaries = computed<TomestoneSummary[]>(() => {
+  if (!demandResult.value || !groupData.value) return []
+
+  return demandResult.value.tomestoneSummaries.map(summary => {
+    let totalNeeded = 0
+
+    demandResult.value!.tomestoneItems.forEach(item => {
+      if (item.tradeDetails?.costId === summary.costId) {
+        // 如果道具未被标记为已完全收集，则按全部未收集来计算点数需求
+        if (!isItemOwned(item.itemId, item.needCount)) {
+          totalNeeded += item.tradeDetails.totalTomestonesNeeded
+        }
+      }
+    })
+
+    return {
+      ...summary,
+      totalNeeded,
+    }
+  })
+})
 
 // 切换已拥有状态，勾选时持久化保存当前需求数量
 const toggleItemOwned = (itemId: number, currentNeedCount: number, checked: boolean) => {
@@ -299,8 +322,8 @@ onUnmounted(() => {
                   </template>
 
                   <!-- 点数总和展示 -->
-                  <n-alert v-if="demandResult.tomestoneSummaries.length > 0" type="info" title="点数需求总计" class="mb-3">
-                    <div v-for="ts in demandResult.tomestoneSummaries" :key="ts.costId" class="mt-1">
+                  <n-alert v-if="tomestoneSummaries.length > 0" type="info" title="点数需求总计" class="mb-3">
+                    <div v-for="ts in tomestoneSummaries" :key="ts.costId" class="mt-1">
                       <ItemSpan v-if="!isMobile" :item-info="getItemInfo(ts.costId)" :amount="ts.totalNeeded" show-amount />
                       <div v-else class="text-xs">
                         {{ getItemInfo(ts.costId).name_zh }} x{{ ts.totalNeeded.toLocaleString() }}
