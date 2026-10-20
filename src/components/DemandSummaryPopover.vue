@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { InfoOutlined } from '@vicons/material'
 import type { RelicDataGroup } from '@/assets/data'
 import { useStore } from '@/stores'
-import { calcRelicDemand, calcSingleStageDemand } from '@/tools/relic-demand'
+import { calcRelicDemand, calcSingleStageDemand, applyOwnedToDemand } from '@/tools/relic-demand'
 import { getItemInfo } from '@/tools/item'
 import ItemSpan from '@/components/ui/ItemSpan.vue'
 import { useIsMobile } from '@/composables/useIsMobile'
@@ -38,7 +38,8 @@ const isAllCollected = computed(() => {
   }
 })
 
-const demandResult = computed(() => {
+// 原始需求（未扣除已有数量）
+const rawDemandResult = computed(() => {
   const group = props.relicGroup
   if (!group) return null
 
@@ -66,6 +67,13 @@ const demandResult = computed(() => {
   }
 
   return null
+})
+
+// 展示用需求：扣除用户已有数量后的剩余需筹备数量
+const demandResult = computed(() => {
+  if (!rawDemandResult.value) return null
+  const ownedMap = store.userData.demandItemOwned?.[props.relicGroup.id] ?? {}
+  return applyOwnedToDemand(rawDemandResult.value, ownedMap)
 })
 
 const popoverTitle = computed(() => {

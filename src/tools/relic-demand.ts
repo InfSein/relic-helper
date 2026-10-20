@@ -223,3 +223,28 @@ export const calcSingleStageDemand = (
 
   return classifyAndSortItems(itemNeedMap)
 }
+
+/**
+ * 计算物品剩余需筹备数量（总需 - 已有，最小为 0）
+ */
+export const getRemainingCount = (needCount: number, ownedCount: number = 0): number => {
+  return Math.max(0, needCount - Math.max(0, ownedCount))
+}
+
+/**
+ * 扣除已有数量后，重新生成需求结果：
+ * - 各物品数量变为剩余需筹备数量，剩余为 0 的物品被移除
+ * - 点数道具的点数需求与点数汇总基于剩余数量重新计算
+ */
+export const applyOwnedToDemand = (
+  result: RelicDemandResult,
+  ownedMap: Record<number, number> = {}
+): RelicDemandResult => {
+  const itemNeedMap = new Map<number, number>()
+  const allItems = [...result.tomestoneItems, ...result.craftItems, ...result.otherItems]
+  allItems.forEach(item => {
+    itemNeedMap.set(item.itemId, getRemainingCount(item.needCount, ownedMap[item.itemId]))
+  })
+  // 复用分类逻辑，保证点数换算规则（兑换比例、向上取整）一致
+  return classifyAndSortItems(itemNeedMap)
+}

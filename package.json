@@ -1,9 +1,9 @@
 {
   "name": "relic-helper",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "last_update": {
-    "date": "2026/10/01",
-    "patch": "7.56"
+    "date": "2026/10/20",
+    "patch": "7.57"
   },
   "private": true,
   "type": "module",

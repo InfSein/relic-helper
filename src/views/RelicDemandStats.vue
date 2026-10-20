@@ -7,7 +7,8 @@ import ProgressTable from '@/components/ProgressTable.vue'
 import TargetProgressTable from '@/components/TargetProgressTable.vue'
 import ItemSpan from '@/components/ui/ItemSpan.vue'
 import { getItemInfo } from '@/tools/item'
-import { calcRelicDemand, type RelicDemandResult, type TomestoneSummary } from '@/tools/relic-demand'
+import DemandItemRow from '@/components/DemandItemRow.vue'
+import { calcRelicDemand, applyOwnedToDemand, type RelicDemandResult, type TomestoneSummary } from '@/tools/relic-demand'
 import { useIsMobile } from '@/composables/useIsMobile'
 import {
   RefreshOutlined,
@@ -133,40 +134,22 @@ const demandResult = computed<RelicDemandResult | null>(() => {
   )
 })
 
-// 检查物品是否标记为已拥有
-const isItemOwned = (itemId: number, currentNeedCount: number): boolean => {
-  if (!groupData.value) return false
-  const gid = groupData.value.id
-  const savedCount = store.userData.demandItemOwned?.[gid]?.[itemId]
-  if (savedCount === undefined) return false
-  return savedCount >= currentNeedCount
-}
-
-// 计算实际剩余所需的点数需求总计（排除已标记为完全收集的道具）
-const tomestoneSummaries = computed<TomestoneSummary[]>(() => {
-  if (!demandResult.value || !groupData.value) return []
-
-  return demandResult.value.tomestoneSummaries.map(summary => {
-    let totalNeeded = 0
-
-    demandResult.value!.tomestoneItems.forEach(item => {
-      if (item.tradeDetails?.costId === summary.costId) {
-        // 如果道具未被标记为已完全收集，则按全部未收集来计算点数需求
-        if (!isItemOwned(item.itemId, item.needCount)) {
-          totalNeeded += item.tradeDetails.totalTomestonesNeeded
-        }
-      }
-    })
-
-    return {
-      ...summary,
-      totalNeeded,
-    }
-  })
+// 当前道具组中用户已筹集的物品数量表
+const ownedMap = computed<Record<number, number>>(() => {
+  if (!groupData.value) return {}
+  return store.userData.demandItemOwned?.[groupData.value.id] ?? {}
 })
 
-// 切换已拥有状态，勾选时持久化保存当前需求数量
-const toggleItemOwned = (itemId: number, currentNeedCount: number, checked: boolean) => {
+const getOwnedCount = (itemId: number): number => ownedMap.value[itemId] ?? 0
+
+// 点数需求总计：基于各道具扣除已有数量后的剩余需筹备数量计算
+const tomestoneSummaries = computed<TomestoneSummary[]>(() => {
+  if (!demandResult.value) return []
+  return applyOwnedToDemand(demandResult.value, ownedMap.value).tomestoneSummaries
+})
+
+// 设置物品已有数量并持久化，数量为 0 时移除记录
+const setOwnedCount = (itemId: number, count: number) => {
   if (!groupData.value) return
   const gid = groupData.value.id
   if (!store.userData.demandItemOwned) {
@@ -175,8 +158,8 @@ const toggleItemOwned = (itemId: number, currentNeedCount: number, checked: bool
   if (!store.userData.demandItemOwned[gid]) {
     store.userData.demandItemOwned[gid] = {}
   }
-  if (checked) {
-    store.userData.demandItemOwned[gid][itemId] = currentNeedCount
+  if (count > 0) {
+    store.userData.demandItemOwned[gid][itemId] = count
   } else {
     delete store.userData.demandItemOwned[gid][itemId]
   }
@@ -332,18 +315,13 @@ onUnmounted(() => {
                   </n-alert>
 
                   <div class="flex flex-col gap-2">
-                    <div
+                    <DemandItemRow
                       v-for="item in demandResult.tomestoneItems"
                       :key="item.itemId"
-                      class="p-1.5 bg-slate-500/5 rounded flex justify-between items-center transition-opacity"
-                      :class="{ 'opacity-40': isItemOwned(item.itemId, item.needCount) }"
-                    >
-                      <ItemSpan :item-info="item.itemInfo" :amount="item.needCount" show-amount />
-                      <n-checkbox
-                        :checked="isItemOwned(item.itemId, item.needCount)"
-                        @update:checked="(val: boolean) => toggleItemOwned(item.itemId, item.needCount, val)"
-                      />
-                    </div>
+                      :item="item"
+                      :owned="getOwnedCount(item.itemId)"
+                      @update:owned="(count: number) => setOwnedCount(item.itemId, count)"
+                    />
                   </div>
                 </n-card>
 
@@ -356,18 +334,13 @@ onUnmounted(() => {
                     无制作道具需求
                   </div>
                   <div v-else class="flex flex-col gap-2">
-                    <div
+                    <DemandItemRow
                       v-for="item in demandResult.craftItems"
                       :key="item.itemId"
-                      class="p-1.5 bg-slate-500/5 rounded flex justify-between items-center transition-opacity"
-                      :class="{ 'opacity-40': isItemOwned(item.itemId, item.needCount) }"
-                    >
-                      <ItemSpan :item-info="item.itemInfo" :amount="item.needCount" show-amount />
-                      <n-checkbox
-                        :checked="isItemOwned(item.itemId, item.needCount)"
-                        @update:checked="(val: boolean) => toggleItemOwned(item.itemId, item.needCount, val)"
-                      />
-                    </div>
+                      :item="item"
+                      :owned="getOwnedCount(item.itemId)"
+                      @update:owned="(count: number) => setOwnedCount(item.itemId, count)"
+                    />
                   </div>
                 </n-card>
 
@@ -380,18 +353,13 @@ onUnmounted(() => {
                     无其他道具需求
                   </div>
                   <div v-else class="flex flex-col gap-2">
-                    <div
+                    <DemandItemRow
                       v-for="item in demandResult.otherItems"
                       :key="item.itemId"
-                      class="p-1.5 bg-slate-500/5 rounded flex justify-between items-center transition-opacity"
-                      :class="{ 'opacity-40': isItemOwned(item.itemId, item.needCount) }"
-                    >
-                      <ItemSpan :item-info="item.itemInfo" :amount="item.needCount" show-amount />
-                      <n-checkbox
-                        :checked="isItemOwned(item.itemId, item.needCount)"
-                        @update:checked="(val: boolean) => toggleItemOwned(item.itemId, item.needCount, val)"
-                      />
-                    </div>
+                      :item="item"
+                      :owned="getOwnedCount(item.itemId)"
+                      @update:owned="(count: number) => setOwnedCount(item.itemId, count)"
+                    />
                   </div>
                 </n-card>
               </div>
