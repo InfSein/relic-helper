@@ -163,7 +163,7 @@ const popoverTitle = computed(() => {
       <div class="p-4 overflow-y-auto h-full">
         <!-- 1. 已全收集 -->
         <template v-if="isAllCollected">
-          <div class="text-base font-bold text-green-600 py-2 text-center">
+          <div class="font-bold text-green-600 py-2 text-center">
             {{ targetScope === 'stage' ? '此阶段已全收集！' : `「${relicGroup.name_zh}」已全收集！` }}
           </div>
         </template>

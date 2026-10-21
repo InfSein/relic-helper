@@ -34,11 +34,14 @@ const onCheckedUpdate = (checked: boolean) => {
 
 <template>
   <div
-    class="p-1.5 bg-slate-500/5 rounded flex justify-between items-center gap-2 transition-opacity"
-    :class="{ 'opacity-40': isCollected }"
+    class="item-row p-1.5 bg-slate-500/5 rounded flex justify-between items-center gap-x-2 transition-opacity"
+    :class="{
+      'opacity-40': isCollected,
+      'has-input': showInput,
+    }"
   >
     <ItemSpan :item-info="item.itemInfo" :amount="remaining" show-amount />
-    <div class="flex items-center gap-2 shrink-0">
+    <div class="action-group flex items-center gap-2 shrink-0">
       <n-input-number
         v-if="showInput"
         size="tiny"
@@ -61,5 +64,17 @@ const onCheckedUpdate = (checked: boolean) => {
 /* 输入框中的数字居中显示 */
 :deep(.n-input__input-el) {
   text-align: center;
+}
+
+/* 移动端排版：当显示已有输入框时，操作区域另起一行并保持右对齐；不显示输入框时保持单行 */
+@media (max-width: 767px) {
+  .item-row.has-input {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .item-row.has-input .action-group {
+    align-self: flex-end;
+  }
 }
 </style>
