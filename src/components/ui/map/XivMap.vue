@@ -31,50 +31,25 @@ const getAetheryteName = (aetheryte: XivMapAetheryteInfo) => {
 }
 
 const isMapLoaded = ref(false)
-const mapImageRef = ref<InstanceType<typeof XivFARImage> | null>(null)
 
 const handleMapLoad = () => {
   isMapLoaded.value = true
 }
 
-const checkImageLoaded = () => {
-  const imgEl = (mapImageRef.value?.$el ?? null) as HTMLImageElement | null
-  if (imgEl && imgEl.complete && imgEl.naturalWidth > 0) {
-    isMapLoaded.value = true
-  }
-}
-
+// 切换地图图片地址时，先隐藏标记图层，待新地图加载完成后再显示
 watch(
   () => props.mapData.map_src,
   () => {
     isMapLoaded.value = false
-    nextTick(() => {
-      checkImageLoaded()
-    })
   }
 )
-
-onMounted(() => {
-  nextTick(() => {
-    checkImageLoaded()
-  })
-})
 </script>
 
 <template>
   <div class="map-wrapper">
     <div class="map-content" :style="{ width: mapSize + 'px', height: mapSize + 'px' }">
-      <!-- 骨架屏 -->
-      <n-skeleton
-        v-if="!isMapLoaded"
-        class="map-skeleton"
-        :width="mapSize"
-        :height="mapSize"
-        :sharp="true"
-      />
       <!-- 地图 -->
       <XivFARImage
-        ref="mapImageRef"
         class="map-image"
         :size="mapSize"
         :src="mapData.map_src"
@@ -122,15 +97,6 @@ onMounted(() => {
   .map-content {
     position: relative;
     overflow: hidden;
-
-    .map-skeleton {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-    }
 
     .map-image {
       display: block;

@@ -16,6 +16,11 @@ const props = withDefaults(defineProps<XivFARImageProps>(), {
   lazy: true,
 })
 
+const emit = defineEmits<{
+  (e: 'load', event?: Event): void
+  (e: 'error', event: Event): void
+}>()
+
 const containerRef = ref<HTMLElement | null>(null)
 const imgRef = ref<HTMLImageElement | null>(null)
 const isLoaded = ref(false)
@@ -24,9 +29,11 @@ const isIntersected = ref(!props.lazy)
 
 let observer: IntersectionObserver | null = null
 
+// 检查缓存命中时图片是否已直接完成加载，并通知父组件
 const checkImgComplete = () => {
-  if (imgRef.value?.complete && imgRef.value.naturalWidth > 0) {
+  if (!isLoaded.value && imgRef.value?.complete && imgRef.value.naturalWidth > 0) {
     isLoaded.value = true
+    emit('load')
   }
 }
 
@@ -86,12 +93,16 @@ watch(
   }
 )
 
-const onImageLoad = () => {
-  isLoaded.value = true
+const onImageLoad = (event: Event) => {
+  if (!isLoaded.value) {
+    isLoaded.value = true
+    emit('load', event)
+  }
 }
 
-const onImageLoadError = () => {
+const onImageLoadError = (event: Event) => {
   loadFailed.value = true
+  emit('error', event)
 }
 </script>
 
