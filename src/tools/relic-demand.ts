@@ -1,8 +1,8 @@
 import {
   type RelicDataGroup,
-  XivUnpackedRecipes,
   XivUnpackedTradeMap,
 } from '@/assets/data'
+import { getTomestoneFallbackName, isTomestone } from '@/constants/tomestones'
 import { getItemInfo, type ItemInfo } from './item'
 
 export interface DemandItemInfo {
@@ -48,9 +48,9 @@ const classifyAndSortItems = (itemNeedMap: Map<number, number>): RelicDemandResu
     const itemInfo = getItemInfo(itemId)
     const tradeInfo = XivUnpackedTradeMap[itemId]
 
-    // 检查是否直接就是点数货币 (28: 诗学, 48: 数理)
-    if (itemId === 28 || itemId === 48) {
-      const costName = itemInfo.name_zh || (itemId === 28 ? '亚拉戈诗学神典石' : '亚拉戈数理神典石')
+    // 检查是否直接就是点数货币
+    if (isTomestone(itemId)) {
+      const costName = itemInfo.name_zh || getTomestoneFallbackName(itemId)
       tomestoneItems.push({
         itemId,
         itemInfo,
@@ -70,10 +70,10 @@ const classifyAndSortItems = (itemNeedMap: Map<number, number>): RelicDemandResu
       currentTomestoneTotal.totalNeeded += needCount
       tomestoneTotalsMap.set(itemId, currentTomestoneTotal)
     }
-    // 检查是否为点数兑换道具 (costId为 28: 诗学 或 48: 数理)
-    else if (tradeInfo && (tradeInfo.costId === 28 || tradeInfo.costId === 48)) {
+    // 检查是否为点数兑换道具
+    else if (tradeInfo && isTomestone(tradeInfo.costId)) {
       const costItemInfo = getItemInfo(tradeInfo.costId)
-      const costName = costItemInfo.name_zh || (tradeInfo.costId === 28 ? '亚拉戈诗学神典石' : '亚拉戈数理神典石')
+      const costName = costItemInfo.name_zh || getTomestoneFallbackName(tradeInfo.costId)
       const receiveCount = tradeInfo.receiveCount || 1
       const costCount = tradeInfo.costCount
       const totalTomestonesNeeded = Math.ceil(needCount / receiveCount) * costCount
@@ -98,7 +98,8 @@ const classifyAndSortItems = (itemNeedMap: Map<number, number>): RelicDemandResu
       tomestoneTotalsMap.set(tradeInfo.costId, currentTomestoneTotal)
     }
     // 检查是否为制作道具
-    else if (!!XivUnpackedRecipes[itemId] || !!itemInfo.craftInfo?.recipeId) {
+    // 注：recipes 表以配方 ID 为键，物品对应的配方需经 itemInfo.craftInfo 获取
+    else if (itemInfo.craftInfo?.recipeId) {
       craftItems.push({
         itemId,
         itemInfo,

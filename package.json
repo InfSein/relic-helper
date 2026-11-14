@@ -1,6 +1,6 @@
 {
   "name": "relic-helper",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "last_update": {
     "date": "2026/11/07",
     "patch": "7.57"
@@ -12,6 +12,8 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "type-check": "vue-tsc --build",
     "lint": "run-s lint:*",
     "lint:eslint": "eslint . --fix --cache"
@@ -46,6 +48,7 @@
     "vfonts": "^0.0.3",
     "vite": "^8.3.5",
     "vite-svg-loader": "^5.1.1",
+    "vitest": "^5.1.0",
     "vue-tsc": "^3.2.6"
   },
   "engines": {

@@ -19,7 +19,7 @@ export const useStore = defineStore('main', {
     },
     setAppConfig(value: AppConfig) {
       this.appConfig = fixAppConfig(value)
-      setItem(StorageKeys.AppConfig, value)
+      setItem(StorageKeys.AppConfig, this.appConfig)
     },
     reloadUserData() {
       this.userData = fixUserData(getItem<UserData>(StorageKeys.UserData))
@@ -30,7 +30,7 @@ export const useStore = defineStore('main', {
     },
     setUserData(value: UserData) {
       this.userData = fixUserData(value)
-      setItem(StorageKeys.UserData, value)
+      setItem(StorageKeys.UserData, this.userData)
     },
   }
 })

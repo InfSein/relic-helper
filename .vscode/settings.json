@@ -3,7 +3,7 @@
   "explorer.fileNesting.patterns": {
     "auto-imports.d.ts": "components.*.ts",
     "tsconfig.json": "tsconfig.*.json, env.d.ts, env.*.ts",
-    "vite.config.*": "eslint*, crowdin.yml",
+    "vite.config.*": "vitest*, eslint*, crowdin.yml",
     "package.json": "package-lock.json",
     "folder-alias.json": "private-folder-alias.json",
     "README.md": "CHANGELOG.md, LICENSE"

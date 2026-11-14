@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { relicGroupMapByRtKey, type RelicRouteKey } from '@/assets/data'
-import XivMarkdown from '@/components/ui/XivMarkdown.vue'
+import LazyXivMarkdown from '@/components/ui/LazyXivMarkdown.vue'
 import ProgressTable from '@/components/ProgressTable.vue'
-import { stageGuides, summaries } from '@/assets/contents'
+import { stageGuideLoaders, summaryLoaders } from '@/assets/contents'
 import { useStore } from '@/stores'
 import DemandSummaryPopover from '@/components/DemandSummaryPopover.vue'
 
@@ -31,7 +31,7 @@ const stages = computed(() => {
       jobs: groupData.value.jobs,
       reqs: groupData.value.stage_reqs[stageIndex],
       prereqs: groupData.value.stage_prereqs?.[stageIndex],
-      guide: stageGuides[groupKey.value][stageIndex] ?? ''
+      guideLoader: stageGuideLoaders[groupKey.value]?.[stageIndex]
     }
   }) ?? []
 })
@@ -58,9 +58,9 @@ const defaultExpandedKeys = computed(() => {
       <span>{{ groupData?.name_zh }} — 概览</span>
       <DemandSummaryPopover v-if="groupData" :relic-group="groupData" target-scope="all" />
     </n-h1>
-    <XivMarkdown v-if="summaries[groupKey]" :content="summaries[groupKey]" />
+    <LazyXivMarkdown v-if="summaryLoaders[groupKey]" :loader="summaryLoaders[groupKey]" :skeleton-rows="6" />
     <template v-for="stage in stages" :key="stage.key">
-      <n-collapse v-if="stage.guide" arrow-placement="right" class="n-collapse-fix" :default-expanded-names="defaultExpandedKeys.includes(stage.key) ? [stage.key] : []">
+      <n-collapse v-if="stage.guideLoader" arrow-placement="right" class="n-collapse-fix" :default-expanded-names="defaultExpandedKeys.includes(stage.key) ? [stage.key] : []">
         <n-collapse-item :name="stage.key">
           <template #header>
             <div class="flex items-center gap-2">
@@ -68,7 +68,7 @@ const defaultExpandedKeys = computed(() => {
               <DemandSummaryPopover v-if="groupData" :relic-group="groupData" target-scope="stage" :stage-index="stage.index" />
             </div>
           </template>
-          <XivMarkdown :content="stage.guide" />
+          <LazyXivMarkdown :loader="stage.guideLoader" />
         </n-collapse-item>
       </n-collapse>
       <div v-else class="flex items-center gap-2 my-4">
